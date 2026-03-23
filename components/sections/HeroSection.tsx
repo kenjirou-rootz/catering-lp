@@ -10,25 +10,46 @@ import {
 
 type HeroData = {
   catchCopy?: string;
+  mediaType?: "image" | "video";
   backgroundImage?: any;
+  backgroundVideoUrl?: string;
+  videoPoster?: any;
   ctaText?: string;
 } | null;
 
 export function HeroSection({ data }: { data: HeroData }) {
   const catchCopy = data?.catchCopy || "特別な空間を、\nおいしい料理と共に。";
+  const isVideo = data?.mediaType === "video" && data?.backgroundVideoUrl;
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <HeroAnimation>
         <HeroImage className="absolute inset-0">
-          {data?.backgroundImage && (
-            <Image
-              src={urlFor(data.backgroundImage).width(1920).quality(85).url()}
-              alt="ケータリングの様子"
-              fill
-              priority
-              className="object-cover"
-            />
+          {isVideo ? (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster={
+                data?.videoPoster
+                  ? urlFor(data.videoPoster).width(1920).quality(60).url()
+                  : undefined
+              }
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={data.backgroundVideoUrl} type="video/mp4" />
+            </video>
+          ) : (
+            data?.backgroundImage && (
+              <Image
+                src={urlFor(data.backgroundImage).width(1920).quality(85).url()}
+                alt="ケータリングの様子"
+                fill
+                priority
+                className="object-cover"
+              />
+            )
           )}
           <div className="absolute inset-0 bg-black/40" />
         </HeroImage>
