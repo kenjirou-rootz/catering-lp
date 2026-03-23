@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 type FeatureItem = {
@@ -16,9 +16,7 @@ export function FeaturesSection({ data }: { data: FeatureItem[] | null }) {
   return (
     <section id="features" className="section-padding bg-white">
       <div className="container-site">
-        <ScrollReveal>
-          <SectionHeading title="弊社の特長" subtitle="ケータリングに対する不安を解消する6つのポイント" />
-        </ScrollReveal>
+        <AnimatedSectionHeading title="弊社の特長" subtitle="ケータリングに対する不安を解消する6つのポイント" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {data.map((item, i) => (
             <ScrollReveal key={item._id} delay={i * 0.08}>

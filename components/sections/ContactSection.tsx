@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { Button } from "@/components/ui/Button";
 
 type FormState = "idle" | "submitting" | "success" | "error";
@@ -71,7 +71,7 @@ export function ContactSection() {
   return (
     <section id="contact" className="section-padding bg-brand-dark">
       <div className="container-site">
-        <SectionHeading
+        <AnimatedSectionHeading
           title="お問い合わせ"
           subtitle="ケータリングに関するご相談・お見積もりなど、お気軽にお問い合わせください"
           className="[&_h2]:text-white [&_p]:text-white/70"

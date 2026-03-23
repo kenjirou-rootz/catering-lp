@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -19,12 +19,10 @@ export function PortfolioSection({ data }: { data: PortfolioItem[] | null }) {
   return (
     <section id="portfolio" className="section-padding bg-white">
       <div className="container-site">
-        <ScrollReveal>
-          <SectionHeading title="実績レポート" subtitle="これまでにお手伝いしたケータリングの一部をご紹介します" />
-        </ScrollReveal>
+        <AnimatedSectionHeading title="実績レポート" subtitle="これまでにお手伝いしたケータリングの一部をご紹介します" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {data.map((item, i) => (
-            <ScrollReveal key={item._id} delay={i * 0.1}>
+            <ScrollReveal key={item._id} delay={i * 0.1} variant="imageReveal">
               <Card className="h-full flex flex-col">
                 <div className="relative aspect-[4/3]">
                   {item.images && item.images[0] ? (

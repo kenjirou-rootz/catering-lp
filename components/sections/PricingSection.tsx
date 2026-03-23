@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Card } from "@/components/ui/Card";
 
@@ -68,9 +68,7 @@ export function PricingSection({ data }: { data: PricingPlan[] | null }) {
   return (
     <section id="pricing" className="section-padding bg-beige-50">
       <div className="container-site">
-        <ScrollReveal>
-          <SectionHeading title="料金プラン" subtitle="お客様のご要望に合わせた柔軟なプランをご用意しています" />
-        </ScrollReveal>
+        <AnimatedSectionHeading title="料金プラン" subtitle="お客様のご要望に合わせた柔軟なプランをご用意しています" />
 
         {basicPlans.length > 0 && (
           <ScrollReveal delay={0.1}>

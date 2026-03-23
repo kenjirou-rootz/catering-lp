@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 type FlowStep = {
@@ -17,12 +17,10 @@ export function FlowSection({ data }: { data: FlowStep[] | null }) {
   return (
     <section id="flow" className="section-padding bg-white">
       <div className="container-site">
-        <ScrollReveal>
-          <SectionHeading
-            title="ご利用の流れ"
-            subtitle="お問い合わせから当日まで、安心のサポート"
-          />
-        </ScrollReveal>
+        <AnimatedSectionHeading
+          title="ご利用の流れ"
+          subtitle="お問い合わせから当日まで、安心のサポート"
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {data.map((step, i) => (
             <ScrollReveal key={step._id} delay={i * 0.1}>

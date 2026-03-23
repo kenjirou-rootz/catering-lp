@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -32,12 +32,10 @@ export function CoordinateSection({ data }: { data: CoordinateItem[] | null }) {
   return (
     <section id="coordinate" className="section-padding bg-white">
       <div className="container-site">
-        <ScrollReveal>
-          <SectionHeading
-            title="テーブルコーディネート"
-            subtitle="空間を彩る、こだわりのコーディネート"
-          />
-        </ScrollReveal>
+        <AnimatedSectionHeading
+          title="テーブルコーディネート"
+          subtitle="空間を彩る、こだわりのコーディネート"
+        />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {data.map((item, i) => (
             <ScrollReveal key={item._id} delay={i * 0.1}>

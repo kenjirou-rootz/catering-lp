@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { ParallaxImage } from "@/components/ui/ParallaxImage";
 
 type VenueData = {
   description?: string;
@@ -14,12 +15,10 @@ export function VenueSection({ data }: { data: VenueData }) {
   return (
     <section className="section-padding bg-beige-50">
       <div className="container-site">
-        <ScrollReveal>
-          <SectionHeading
-            title="レンタル会場"
-            subtitle="会場の手配もお任せください"
-          />
-        </ScrollReveal>
+        <AnimatedSectionHeading
+          title="レンタル会場"
+          subtitle="会場の手配もお任せください"
+        />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <ScrollReveal delay={0.1}>
             {data.description && (
@@ -31,9 +30,9 @@ export function VenueSection({ data }: { data: VenueData }) {
           <ScrollReveal delay={0.2}>
             <div className="grid grid-cols-1 gap-4">
               {data.photos?.map((photo: any, i: number) => (
-                <div
+                <ParallaxImage
                   key={i}
-                  className="relative aspect-[16/10] rounded-lg overflow-hidden"
+                  className="relative aspect-[16/10] rounded-lg"
                 >
                   <Image
                     src={urlFor(photo).width(800).quality(80).url()}
@@ -41,7 +40,7 @@ export function VenueSection({ data }: { data: VenueData }) {
                     fill
                     className="object-cover"
                   />
-                </div>
+                </ParallaxImage>
               ))}
               {(!data.photos || data.photos.length === 0) && (
                 <div className="aspect-[16/10] rounded-lg bg-beige-200 flex items-center justify-center text-brand-muted">

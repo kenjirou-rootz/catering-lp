@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
+import { TextReveal } from "@/components/ui/TextReveal";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -19,9 +20,9 @@ export function CatchCarouselSection({ data }: { data: CatchCarouselData }) {
     <section className="section-padding bg-beige-50">
       <div className="container-site text-center mb-12">
         {data.catchCopy && (
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-brand-dark tracking-tight">
+          <TextReveal as="h2" className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-brand-dark tracking-tight">
             {data.catchCopy}
-          </h2>
+          </TextReveal>
         )}
         {data.description && (
           <p className="mt-4 text-base md:text-lg text-brand-muted font-light max-w-2xl mx-auto leading-relaxed">

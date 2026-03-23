@@ -3,8 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
@@ -76,12 +75,10 @@ export function TestimonialsSection({
   return (
     <section id="testimonials" className="section-padding bg-beige-100">
       <div className="container-site">
-        <ScrollReveal>
-          <SectionHeading
-            title="お客様の声"
-            subtitle="実際にご利用いただいたお客様からの声をご紹介します"
-          />
-        </ScrollReveal>
+        <AnimatedSectionHeading
+          title="お客様の声"
+          subtitle="実際にご利用いただいたお客様からの声をご紹介します"
+        />
         <Swiper
           modules={[Pagination]}
           pagination={{ clickable: true }}

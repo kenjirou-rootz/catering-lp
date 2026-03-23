@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { ParallaxImage } from "@/components/ui/ParallaxImage";
 
 type AboutData = {
   salesText?: string;
@@ -13,9 +14,7 @@ export function AboutSection({ data }: { data: AboutData }) {
   return (
     <section id="about" className="section-padding bg-beige-100">
       <div className="container-site">
-        <ScrollReveal>
-          <SectionHeading title="Kitaoとは？" />
-        </ScrollReveal>
+        <AnimatedSectionHeading title="Kitaoとは？" />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <ScrollReveal delay={0.1}>
             <div className="space-y-6">
@@ -35,7 +34,7 @@ export function AboutSection({ data }: { data: AboutData }) {
             </div>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-            <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
+            <ParallaxImage className="relative aspect-[4/3] rounded-lg">
               {data?.images && data.images[0] ? (
                 <Image
                   src={urlFor(data.images[0]).width(800).quality(80).url()}
@@ -48,7 +47,7 @@ export function AboutSection({ data }: { data: AboutData }) {
                   画像準備中
                 </div>
               )}
-            </div>
+            </ParallaxImage>
           </ScrollReveal>
         </div>
       </div>
