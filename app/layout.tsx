@@ -44,6 +44,26 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja" className={`${notoSerifJP.variable} ${notoSansJP.variable} ${inter.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "Kitaoケータリング",
+              description: "法人向け出張ケータリングサービス",
+              url: process.env.NEXT_PUBLIC_SITE_URL,
+              "@id": process.env.NEXT_PUBLIC_SITE_URL,
+              serviceType: "ケータリング",
+              areaServed: {
+                "@type": "Country",
+                name: "Japan",
+              },
+            }),
+          }}
+        />
+      </head>
       <body className="font-sans">{children}</body>
     </html>
   );
