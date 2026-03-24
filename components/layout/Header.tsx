@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { clsx } from "clsx";
-import { motion, useScroll, useMotionValueEvent, useReducedMotion, AnimatePresence } from "framer-motion";
+import { m, useScroll, useMotionValueEvent, useReducedMotion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
@@ -38,17 +38,15 @@ export function Header({ logo }: HeaderProps) {
     if (isAtTop) {
       setIsHidden(false);
     } else if (latest > previous && latest > 100) {
-      // Scrolling down past 100px
       setIsHidden(true);
       setIsMobileMenuOpen(false);
     } else if (previous - latest > 5) {
-      // Scrolling up by more than 5px
       setIsHidden(false);
     }
   });
 
   return (
-    <motion.header
+    <m.header
       animate={isHidden ? { y: "-100%" } : { y: 0 }}
       transition={
         prefersReducedMotion
@@ -58,7 +56,7 @@ export function Header({ logo }: HeaderProps) {
       className={clsx(
         "fixed top-0 left-0 right-0 z-50",
         isScrolled
-          ? "bg-white/95 backdrop-blur-sm shadow-sm py-3"
+          ? "bg-cream-50/95 backdrop-blur-sm shadow-sm py-3"
           : "bg-transparent py-5"
       )}
       style={{ transition: "background-color 0.3s, padding 0.3s, box-shadow 0.3s" }}
@@ -74,7 +72,7 @@ export function Header({ logo }: HeaderProps) {
               priority
             />
           ) : (
-            <span className="text-xl font-serif font-semibold text-brand-dark">
+            <span className={clsx("text-xl font-serif font-semibold transition-colors", isScrolled ? "text-dark" : "text-white")}>
               Kitao
             </span>
           )}
@@ -85,21 +83,21 @@ export function Header({ logo }: HeaderProps) {
             <a
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-brand-muted hover:text-brand-dark transition-colors"
+              className={clsx("text-xs tracking-wider uppercase transition-colors", isScrolled ? "text-dark-subtle hover:text-dark" : "text-white/80 hover:text-white")}
             >
               {item.label}
             </a>
           ))}
           <a
             href="#contact"
-            className="px-6 py-2.5 text-sm font-medium text-white bg-brand-orange rounded hover:bg-brand-orange-hover transition-colors cursor-pointer"
+            className="px-6 py-2.5 text-xs font-medium tracking-wider uppercase text-white bg-terra hover:bg-terra-hover rounded-full transition-colors cursor-pointer"
           >
             お問い合わせ
           </a>
         </nav>
 
         <button
-          className="lg:hidden p-2 cursor-pointer"
+          className={clsx("lg:hidden p-2 cursor-pointer transition-colors", isScrolled ? "text-dark" : "text-white")}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label={isMobileMenuOpen ? "メニューを閉じる" : "メニューを開く"}
         >
@@ -109,19 +107,19 @@ export function Header({ logo }: HeaderProps) {
 
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: DURATION.DEFAULT, ease: EASE_REVEAL }}
-            className="lg:hidden bg-white border-t border-beige-200 shadow-lg overflow-hidden"
+            className="lg:hidden bg-cream-50 border-t border-cream-300 shadow-lg overflow-hidden"
           >
             <nav className="container-site py-4 flex flex-col gap-3">
               {navItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className="py-2 text-base text-brand-muted hover:text-brand-dark transition-colors"
+                  className="py-2 text-sm tracking-wider uppercase text-dark-muted hover:text-dark transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
@@ -129,15 +127,15 @@ export function Header({ logo }: HeaderProps) {
               ))}
               <a
                 href="#contact"
-                className="mt-2 py-3 text-center text-white bg-brand-orange rounded hover:bg-brand-orange-hover transition-colors cursor-pointer"
+                className="mt-2 py-3 text-center text-white bg-terra hover:bg-terra-hover transition-colors cursor-pointer"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 お問い合わせ
               </a>
             </nav>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </m.header>
   );
 }

@@ -5,8 +5,9 @@ import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { Button } from "@/components/ui/Button";
 
 type FormState = "idle" | "submitting" | "success" | "error";
+type SectionHeading = { en: string; ja: string };
 
-export function ContactSection() {
+export function ContactSection({ heading }: { heading: SectionHeading }) {
   const [formState, setFormState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -43,7 +44,7 @@ export function ContactSection() {
 
   if (formState === "success") {
     return (
-      <section id="contact" className="section-padding bg-brand-dark">
+      <section id="contact" className="section-padding bg-dark border-t-2 border-terra">
         <div className="container-site text-center">
           <div className="max-w-lg mx-auto">
             <h2 className="text-3xl font-serif font-medium text-white mb-4">
@@ -55,7 +56,7 @@ export function ContactSection() {
             <Button
               onClick={() => setFormState("idle")}
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-brand-dark"
+              className="border-white text-white hover:bg-white hover:text-dark"
             >
               新しいお問い合わせ
             </Button>
@@ -66,24 +67,24 @@ export function ContactSection() {
   }
 
   const inputStyles =
-    "w-full px-4 py-3 rounded bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-transparent";
+    "w-full px-0 py-3 bg-transparent border-0 border-b border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-terra transition-colors";
 
   return (
-    <section id="contact" className="section-padding bg-brand-dark">
+    <section id="contact" className="section-padding bg-dark border-t-2 border-terra">
       <div className="container-site">
         <AnimatedSectionHeading
-          title="お問い合わせ"
+          title={heading.en}
+          titleJa={heading.ja}
           subtitle="ケータリングに関するご相談・お見積もりなど、お気軽にお問い合わせください"
-          className="[&_h2]:text-white [&_p]:text-white/70"
+          className="[&_h2]:text-white [&_p]:text-white/70 [&_.bg-terra]:bg-terra-light"
         />
-        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
-          {/* Name */}
+        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-8">
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-white/90 mb-2"
+              className="block text-xs tracking-wider uppercase text-white/60 mb-3"
             >
-              お名前 <span className="text-brand-orange">*</span>
+              お名前 <span className="text-terra">*</span>
             </label>
             <input
               id="name"
@@ -95,13 +96,12 @@ export function ContactSection() {
             />
           </div>
 
-          {/* Email */}
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-white/90 mb-2"
+              className="block text-xs tracking-wider uppercase text-white/60 mb-3"
             >
-              メールアドレス <span className="text-brand-orange">*</span>
+              メールアドレス <span className="text-terra">*</span>
             </label>
             <input
               id="email"
@@ -113,13 +113,12 @@ export function ContactSection() {
             />
           </div>
 
-          {/* Phone */}
           <div>
             <label
               htmlFor="phone"
-              className="block text-sm font-medium text-white/90 mb-2"
+              className="block text-xs tracking-wider uppercase text-white/60 mb-3"
             >
-              電話番号 <span className="text-brand-orange">*</span>
+              電話番号 <span className="text-terra">*</span>
             </label>
             <input
               id="phone"
@@ -131,12 +130,11 @@ export function ContactSection() {
             />
           </div>
 
-          {/* Date and Attendees row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <label
                 htmlFor="date"
-                className="block text-sm font-medium text-white/90 mb-2"
+                className="block text-xs tracking-wider uppercase text-white/60 mb-3"
               >
                 利用予定日
               </label>
@@ -150,7 +148,7 @@ export function ContactSection() {
             <div>
               <label
                 htmlFor="attendees"
-                className="block text-sm font-medium text-white/90 mb-2"
+                className="block text-xs tracking-wider uppercase text-white/60 mb-3"
               >
                 予定人数
               </label>
@@ -165,15 +163,14 @@ export function ContactSection() {
             </div>
           </div>
 
-          {/* Budget */}
           <div>
             <label
               htmlFor="budget"
-              className="block text-sm font-medium text-white/90 mb-2"
+              className="block text-xs tracking-wider uppercase text-white/60 mb-3"
             >
               ご予算
             </label>
-            <select id="budget" name="budget" className={inputStyles}>
+            <select id="budget" name="budget" className={`${inputStyles} cursor-pointer`}>
               <option value="">選択してください</option>
               <option value="~10万円">〜10万円</option>
               <option value="10~30万円">10〜30万円</option>
@@ -184,13 +181,12 @@ export function ContactSection() {
             </select>
           </div>
 
-          {/* Message */}
           <div>
             <label
               htmlFor="message"
-              className="block text-sm font-medium text-white/90 mb-2"
+              className="block text-xs tracking-wider uppercase text-white/60 mb-3"
             >
-              お問い合わせ内容 <span className="text-brand-orange">*</span>
+              お問い合わせ内容 <span className="text-terra">*</span>
             </label>
             <textarea
               id="message"
@@ -202,11 +198,11 @@ export function ContactSection() {
             />
           </div>
 
-          {formState === "error" && (
-            <div className="p-4 rounded bg-red-500/20 border border-red-500/40">
+          {formState === "error" ? (
+            <div className="p-4 bg-red-500/20 border border-red-500/40">
               <p className="text-sm text-red-300">{errorMessage}</p>
             </div>
-          )}
+          ) : null}
 
           <div className="text-center pt-4">
             <Button

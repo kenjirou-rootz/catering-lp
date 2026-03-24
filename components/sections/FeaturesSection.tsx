@@ -10,18 +10,20 @@ type FeatureItem = {
   icon?: any;
 };
 
-export function FeaturesSection({ data }: { data: FeatureItem[] | null }) {
+type SectionHeading = { en: string; ja: string };
+
+export function FeaturesSection({ data, heading }: { data: FeatureItem[] | null; heading: SectionHeading }) {
   if (!data || data.length === 0) return null;
 
   return (
     <section id="features" className="section-padding bg-white">
       <div className="container-site">
-        <AnimatedSectionHeading title="弊社の特長" subtitle="ケータリングに対する不安を解消する6つのポイント" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        <AnimatedSectionHeading title={heading.en} titleJa={heading.ja} subtitle="ケータリングに対する不安を解消する6つのポイント" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {data.map((item, i) => (
-            <ScrollReveal key={item._id} delay={i * 0.08}>
-              <div className="text-center p-6">
-                <div className="w-16 h-16 mx-auto mb-5 flex items-center justify-center">
+            <ScrollReveal key={item._id} delay={i * 0.08} variant="editorialSlide">
+              <div className="flex items-start gap-6 border-t border-terra/20 py-8 px-4">
+                <div className="flex-shrink-0 w-20">
                   {item.icon ? (
                     <Image
                       src={urlFor(item.icon).width(64).url()}
@@ -30,21 +32,23 @@ export function FeaturesSection({ data }: { data: FeatureItem[] | null }) {
                       height={64}
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-beige-100 flex items-center justify-center text-brand-orange text-2xl font-bold">
-                      {i + 1}
-                    </div>
+                    <span className="text-5xl font-serif text-terra/30 leading-none">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                   )}
                 </div>
-                {item.title && (
-                  <h3 className="text-lg font-serif font-medium text-brand-dark mb-3">
-                    {item.title}
-                  </h3>
-                )}
-                {item.description && (
-                  <p className="text-sm text-brand-muted leading-relaxed">
-                    {item.description}
-                  </p>
-                )}
+                <div>
+                  {item.title ? (
+                    <h3 className="text-lg font-serif font-medium text-dark mb-2">
+                      {item.title}
+                    </h3>
+                  ) : null}
+                  {item.description ? (
+                    <p className="text-sm text-dark-muted leading-relaxed">
+                      {item.description}
+                    </p>
+                  ) : null}
+                </div>
               </div>
             </ScrollReveal>
           ))}

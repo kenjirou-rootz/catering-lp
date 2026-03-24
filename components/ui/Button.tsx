@@ -1,7 +1,7 @@
 "use client";
 
 import { clsx } from "clsx";
-import { motion, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { SPRING_CTA } from "@/lib/animation";
 
 type ButtonProps = {
@@ -26,13 +26,13 @@ export function Button({
   const prefersReducedMotion = useReducedMotion();
 
   const baseStyles =
-    "inline-flex items-center justify-center px-8 py-4 text-sm font-medium tracking-wider uppercase rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 transition-colors duration-300";
+    "inline-flex items-center justify-center px-8 py-4 text-sm font-medium tracking-wider uppercase rounded-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-terra focus:ring-offset-2 transition-colors duration-300";
 
   const variants = {
     primary:
-      "bg-brand-orange text-white hover:bg-brand-orange-hover",
+      "bg-terra text-white hover:bg-terra-hover",
     outline:
-      "border-2 border-brand-dark text-brand-dark hover:bg-brand-dark hover:text-white",
+      "border-2 border-dark text-dark hover:bg-dark hover:text-cream-50",
   };
 
   const styles = clsx(
@@ -52,14 +52,14 @@ export function Button({
 
   if (href) {
     return (
-      <motion.a href={href} className={styles} {...motionProps}>
+      <m.a href={href} className={styles} {...motionProps}>
         {children}
-      </motion.a>
+      </m.a>
     );
   }
 
   return (
-    <motion.button
+    <m.button
       type={type}
       className={styles}
       disabled={disabled}
@@ -67,6 +67,6 @@ export function Button({
       {...motionProps}
     >
       {children}
-    </motion.button>
+    </m.button>
   );
 }

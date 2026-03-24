@@ -10,31 +10,35 @@ type AboutData = {
   images?: any[];
 } | null;
 
-export function AboutSection({ data }: { data: AboutData }) {
+type SectionHeading = { en: string; ja: string };
+
+export function AboutSection({ data, heading }: { data: AboutData; heading: SectionHeading }) {
   return (
-    <section id="about" className="section-padding bg-beige-100">
+    <section id="about" className="section-padding bg-cream-100">
       <div className="container-site">
-        <AnimatedSectionHeading title="Kitaoとは？" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <ScrollReveal delay={0.1}>
+        <AnimatedSectionHeading title={heading.en} titleJa={heading.ja} align="left" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* テキストエリア: 5/12 (≈ 黄金比 5:7) */}
+          <ScrollReveal delay={0.1} variant="editorialSlide" className="lg:col-span-5 order-2 lg:order-1">
             <div className="space-y-6">
-              {data?.salesText && (
-                <p className="text-base md:text-lg leading-relaxed text-brand-dark whitespace-pre-line">
+              {data?.salesText ? (
+                <p className="text-2xl md:text-3xl lg:text-4xl font-serif font-medium tracking-heading text-dark whitespace-pre-line" style={{ lineHeight: "1.7em" }}>
                   {data.salesText}
                 </p>
-              )}
-              {data?.careerText && (
-                <div className="pt-4 border-t border-beige-200">
-                  <h3 className="text-lg font-serif font-medium text-brand-dark mb-3">経歴</h3>
-                  <p className="text-sm md:text-base leading-relaxed text-brand-muted whitespace-pre-line">
+              ) : null}
+              {data?.careerText ? (
+                <div className="border-l-2 border-terra pl-6">
+                  <h3 className="text-lg font-serif font-medium text-dark mb-3">経歴</h3>
+                  <p className="text-sm md:text-base leading-relaxed text-dark-muted whitespace-pre-line">
                     {data.careerText}
                   </p>
                 </div>
-              )}
+              ) : null}
             </div>
           </ScrollReveal>
-          <ScrollReveal delay={0.2}>
-            <ParallaxImage className="relative aspect-[4/3] rounded-lg">
+          {/* 画像エリア: 7/12 (≈ 黄金比 5:7) */}
+          <ScrollReveal delay={0.2} className="lg:col-span-7 order-1 lg:order-2">
+            <ParallaxImage className="relative aspect-video">
               {data?.images && data.images[0] ? (
                 <Image
                   src={urlFor(data.images[0]).width(800).quality(80).url()}
@@ -43,7 +47,7 @@ export function AboutSection({ data }: { data: AboutData }) {
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-beige-200 flex items-center justify-center text-brand-muted">
+                <div className="w-full h-full bg-cream-200 flex items-center justify-center text-dark-muted">
                   画像準備中
                 </div>
               )}

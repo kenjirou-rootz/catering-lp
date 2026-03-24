@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
@@ -18,8 +18,7 @@ type TestimonialItem = {
   company?: string;
 };
 
-// FadeImage defined at MODULE LEVEL (not inside component)
-function FadeImage({
+const FadeImage = memo(function FadeImage({
   personPhoto,
   eventPhoto,
   name,
@@ -41,8 +40,8 @@ function FadeImage({
   }, [personPhoto, eventPhoto, toggle]);
 
   return (
-    <div className="relative aspect-square rounded-lg overflow-hidden bg-beige-200">
-      {personPhoto && (
+    <div className="relative aspect-square overflow-hidden bg-cream-200">
+      {personPhoto ? (
         <Image
           src={urlFor(personPhoto).width(400).quality(80).url()}
           alt={name || "利用者"}
@@ -51,8 +50,8 @@ function FadeImage({
             showEvent ? "opacity-0" : "opacity-100"
           }`}
         />
-      )}
-      {eventPhoto && (
+      ) : null}
+      {eventPhoto ? (
         <Image
           src={urlFor(eventPhoto).width(400).quality(80).url()}
           alt="会場の様子"
@@ -61,23 +60,28 @@ function FadeImage({
             showEvent ? "opacity-100" : "opacity-0"
           }`}
         />
-      )}
+      ) : null}
     </div>
   );
-}
+});
+
+type SectionHeading = { en: string; ja: string };
 
 export function TestimonialsSectionInner({
   data,
+  heading,
 }: {
   data: TestimonialItem[] | null;
+  heading: SectionHeading;
 }) {
   if (!data || data.length === 0) return null;
 
   return (
-    <section id="testimonials" className="section-padding bg-beige-100">
+    <section id="testimonials" className="section-padding bg-cream-100">
       <div className="container-site">
         <AnimatedSectionHeading
-          title="お客様の声"
+          title={heading.en}
+          titleJa={heading.ja}
           subtitle="実際にご利用いただいたお客様からの声をご紹介します"
         />
         <Swiper
@@ -98,23 +102,26 @@ export function TestimonialsSectionInner({
                   eventPhoto={item.eventPhoto}
                   name={item.name}
                 />
-                <div className="mt-5">
-                  {item.reviewText && (
-                    <p className="text-sm text-brand-dark leading-relaxed mb-4 line-clamp-5">
-                      「{item.reviewText}」
+                <div className="mt-5 relative">
+                  <span className="absolute -top-8 -left-1 text-[80px] font-serif text-terra/10 leading-none pointer-events-none select-none">
+                    &ldquo;
+                  </span>
+                  {item.reviewText ? (
+                    <p className="text-base md:text-lg font-serif text-dark leading-reading mb-4 line-clamp-5 relative z-10">
+                      {item.reviewText}
                     </p>
-                  )}
+                  ) : null}
                   <div className="flex items-center gap-2">
-                    {item.name && (
-                      <span className="text-sm font-medium text-brand-dark">
+                    {item.name ? (
+                      <span className="text-xs tracking-wider uppercase font-medium text-dark">
                         {item.name}
                       </span>
-                    )}
-                    {item.company && (
-                      <span className="text-xs text-brand-muted">
+                    ) : null}
+                    {item.company ? (
+                      <span className="text-xs tracking-wider text-dark-subtle">
                         / {item.company}
                       </span>
-                    )}
+                    ) : null}
                   </div>
                 </div>
               </div>

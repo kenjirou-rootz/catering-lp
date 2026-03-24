@@ -22,7 +22,7 @@ export function HeroSection({ data }: { data: HeroData }) {
   const isVideo = data?.mediaType === "video" && data?.backgroundVideoUrl;
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-end overflow-hidden">
       <HeroAnimation>
         <HeroImage className="absolute inset-0">
           {isVideo ? (
@@ -51,17 +51,27 @@ export function HeroSection({ data }: { data: HeroData }) {
               />
             )
           )}
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         </HeroImage>
 
-        <div className="relative z-10 text-center px-5">
+        <div className="relative z-10 text-left pl-5 md:pl-8 lg:pl-24 pb-20 md:pb-32 pr-5">
           <HeroContent>
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif font-bold text-white leading-tight tracking-tight max-w-4xl mx-auto whitespace-pre-line">
-              {catchCopy}
+            <div className="inline-block border-l border-r border-white/70 px-4 py-2 mb-8 md:mb-10">
+              <span className="text-[10px] md:text-xs lg:text-sm font-serif-ja font-medium text-white tracking-wider">
+                5ツ星シェフ監修のケータリングサービス
+              </span>
+            </div>
+            <h1 className="text-5xl md:text-7xl lg:text-9xl font-serif font-light text-white leading-editorial tracking-heading max-w-5xl">
+              French Chef<br />
+              Catering<br />
+              Kitao
             </h1>
+            <p className="mt-6 text-xl md:text-2xl lg:text-3xl font-serif-ja font-normal text-white leading-relaxed">
+              特別な日を、もっと特別に。
+            </p>
           </HeroContent>
           <HeroCTA className="mt-10">
-            <Button href="#contact" variant="primary" className="text-base px-10 py-5">
+            <Button href="#contact" variant="primary" className="text-base px-10 py-5 !rounded-full font-serif-ja">
               {data?.ctaText || "お問い合わせはこちら"}
             </Button>
           </HeroCTA>

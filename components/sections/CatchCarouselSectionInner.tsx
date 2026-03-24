@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { TextReveal } from "@/components/ui/TextReveal";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -13,24 +14,35 @@ type CatchCarouselData = {
   carouselImages?: any[];
 } | null;
 
-export function CatchCarouselSectionInner({ data }: { data: CatchCarouselData }) {
+export function CatchCarouselSectionInner({ data, headingEn }: { data: CatchCarouselData; headingEn: string }) {
   if (!data) return null;
 
   return (
-    <section className="section-padding bg-beige-50">
+    <section className="section-padding bg-cream-200">
       <div className="container-site text-center mb-12">
-        {data.catchCopy && (
-          <TextReveal as="h2" className="text-3xl md:text-4xl lg:text-5xl font-serif font-medium text-brand-dark tracking-tight">
-            {data.catchCopy}
-          </TextReveal>
-        )}
-        {data.description && (
-          <p className="mt-4 text-base md:text-lg text-brand-muted font-light max-w-2xl mx-auto leading-relaxed">
-            {data.description}
-          </p>
-        )}
+        <ScrollReveal>
+          <div className="w-20 h-[1px] bg-terra mx-auto mb-8" />
+        </ScrollReveal>
+        <TextReveal as="h2" className="text-5xl md:text-7xl lg:text-8xl font-serif font-light text-terra leading-editorial tracking-heading">
+          {headingEn}
+        </TextReveal>
+        {data.catchCopy ? (
+          <ScrollReveal delay={0.2}>
+            <div className="w-8 h-[1px] bg-dark-subtle/40 mt-5 mb-4 mx-auto" />
+            <p className="text-sm md:text-base font-serif-ja text-dark-muted leading-relaxed">
+              {data.catchCopy}
+            </p>
+          </ScrollReveal>
+        ) : null}
+        {data.description ? (
+          <ScrollReveal delay={0.3}>
+            <p className="mt-4 subtitle-editorial max-w-2xl mx-auto leading-relaxed">
+              {data.description}
+            </p>
+          </ScrollReveal>
+        ) : null}
       </div>
-      {data.carouselImages && data.carouselImages.length > 0 && (
+      {data.carouselImages && data.carouselImages.length > 0 ? (
         <div className="w-full overflow-hidden">
           <Swiper
             modules={[Autoplay]}
@@ -46,7 +58,7 @@ export function CatchCarouselSectionInner({ data }: { data: CatchCarouselData })
           >
             {data.carouselImages.map((img: any, i: number) => (
               <SwiperSlide key={i}>
-                <div className="relative aspect-[16/9] rounded-lg overflow-hidden">
+                <div className="relative aspect-[16/9] overflow-hidden">
                   <Image
                     src={urlFor(img).width(800).quality(80).url()}
                     alt={`ケータリングの様子 ${i + 1}`}
@@ -58,7 +70,7 @@ export function CatchCarouselSectionInner({ data }: { data: CatchCarouselData })
             ))}
           </Swiper>
         </div>
-      )}
+      ) : null}
     </section>
   );
 }

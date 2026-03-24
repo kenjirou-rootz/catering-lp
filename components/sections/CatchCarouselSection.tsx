@@ -13,7 +13,7 @@ type CatchCarouselData = {
   carouselImages?: any[];
 } | null;
 
-export function CatchCarouselSection({ data }: { data: CatchCarouselData }) {
+export function CatchCarouselSection({ data, headingEn }: { data: CatchCarouselData; headingEn: string }) {
   if (!data) return null;
-  return <CatchCarouselSectionInner data={data} />;
+  return <CatchCarouselSectionInner data={data} headingEn={headingEn} />;
 }

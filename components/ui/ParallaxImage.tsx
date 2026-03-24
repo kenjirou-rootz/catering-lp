@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { m, useScroll, useTransform, useReducedMotion } from "framer-motion";
 
 type ParallaxImageProps = {
   children: React.ReactNode;
@@ -29,9 +29,9 @@ export function ParallaxImage({
 
   return (
     <div ref={ref} className={className} style={{ overflow: "hidden" }}>
-      <motion.div style={{ y, scale: 1.1, position: "relative", width: "100%", height: "100%" }}>
+      <m.div style={{ y, scale: 1.1, position: "relative", width: "100%", height: "100%" }}>
         {children}
-      </motion.div>
+      </m.div>
     </div>
   );
 }

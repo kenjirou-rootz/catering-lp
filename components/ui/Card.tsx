@@ -10,7 +10,7 @@ export function Card({ children, className, overlay }: CardProps) {
   return (
     <div
       className={clsx(
-        "rounded-lg overflow-hidden bg-white shadow-sm",
+        "overflow-hidden bg-white border border-cream-300 hover:border-terra transition-colors duration-300",
         overlay && "relative",
         className
       )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, createElement } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { m, useInView, useReducedMotion } from "framer-motion";
 import { EASE_REVEAL, DURATION, STAGGER } from "@/lib/animation";
 
 type TextRevealProps = {
@@ -34,13 +34,13 @@ export function TextReveal({
           key={i}
           style={{ display: "block", overflow: "hidden" }}
         >
-          <motion.span
+          <m.span
             style={{ display: "block" }}
-            initial={{ y: "100%", skewY: 2 }}
+            initial={{ y: "100%", skewY: 1 }}
             animate={
               isInView
                 ? { y: 0, skewY: 0 }
-                : { y: "100%", skewY: 2 }
+                : { y: "100%", skewY: 1 }
             }
             transition={{
               duration: DURATION.SLOWER,
@@ -49,7 +49,7 @@ export function TextReveal({
             }}
           >
             {line}
-          </motion.span>
+          </m.span>
         </span>
       ))}
     </Tag>

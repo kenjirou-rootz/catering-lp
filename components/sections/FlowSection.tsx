@@ -11,49 +11,90 @@ type FlowStep = {
   icon?: any;
 };
 
-export function FlowSection({ data }: { data: FlowStep[] | null }) {
+type SectionHeading = { en: string; ja: string };
+
+export function FlowSection({ data, heading }: { data: FlowStep[] | null; heading: SectionHeading }) {
   if (!data || data.length === 0) return null;
 
   return (
-    <section id="flow" className="section-padding bg-white">
+    <section id="flow" className="section-padding bg-cream-50">
       <div className="container-site">
         <AnimatedSectionHeading
-          title="ご利用の流れ"
+          title={heading.en}
+          titleJa={heading.ja}
           subtitle="お問い合わせから当日まで、安心のサポート"
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        {/* Desktop: horizontal editorial strip */}
+        <div className="hidden lg:grid lg:grid-cols-4 gap-0">
           {data.map((step, i) => (
-            <ScrollReveal key={step._id} delay={i * 0.1}>
-              <div className="relative text-center">
-                {/* Step number */}
-                <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-brand-orange text-white flex items-center justify-center text-lg font-bold">
-                  {step.stepNumber || i + 1}
-                </div>
-                {/* Connecting line (hidden on mobile, shown lg+) */}
+            <ScrollReveal key={step._id} delay={i * 0.12}>
+              <div className="relative px-6 py-8">
+                <span className="text-4xl md:text-5xl font-serif text-terra leading-none">
+                  {String(step.stepNumber || i + 1).padStart(2, "0")}
+                </span>
+
                 {i < data.length - 1 && (
-                  <div className="hidden lg:block absolute top-7 left-[calc(50%+28px)] w-[calc(100%-56px)] h-[2px] bg-beige-200" />
+                  <div className="absolute top-12 right-0 w-full h-[1px] border-t border-dashed border-terra/40 -z-10" />
                 )}
-                {/* Icon */}
-                {step.icon && (
-                  <div className="w-12 h-12 mx-auto mb-3">
+
+                {step.icon ? (
+                  <div className="w-10 h-10 mt-4 mb-3">
                     <Image
                       src={urlFor(step.icon).width(48).url()}
                       alt={step.title || ""}
-                      width={48}
-                      height={48}
+                      width={40}
+                      height={40}
                     />
                   </div>
-                )}
-                {step.title && (
-                  <h3 className="text-base font-serif font-medium text-brand-dark mb-2">
+                ) : null}
+                {step.title ? (
+                  <h3 className="text-base font-serif font-medium text-dark mb-2 mt-4">
                     {step.title}
                   </h3>
-                )}
-                {step.description && (
-                  <p className="text-sm text-brand-muted leading-relaxed">
+                ) : null}
+                {step.description ? (
+                  <p className="text-sm text-dark-muted leading-relaxed">
                     {step.description}
                   </p>
-                )}
+                ) : null}
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+
+        {/* Mobile/Tablet: vertical timeline */}
+        <div className="lg:hidden space-y-0">
+          {data.map((step, i) => (
+            <ScrollReveal key={step._id} delay={i * 0.1} variant="editorialSlide">
+              <div className="flex gap-6 py-6 border-t border-terra/20">
+                <div className="flex-shrink-0 w-16">
+                  <span className="text-4xl font-serif text-terra leading-none">
+                    {String(step.stepNumber || i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <div>
+                  {step.icon ? (
+                    <div className="w-8 h-8 mb-2">
+                      <Image
+                        src={urlFor(step.icon).width(48).url()}
+                        alt={step.title || ""}
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                  ) : null}
+                  {step.title ? (
+                    <h3 className="text-base font-serif font-medium text-dark mb-2">
+                      {step.title}
+                    </h3>
+                  ) : null}
+                  {step.description ? (
+                    <p className="text-sm text-dark-muted leading-relaxed">
+                      {step.description}
+                    </p>
+                  ) : null}
+                </div>
               </div>
             </ScrollReveal>
           ))}

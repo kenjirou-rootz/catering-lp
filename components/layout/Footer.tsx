@@ -14,7 +14,7 @@ type FooterProps = {
 
 export function Footer({ settings }: FooterProps) {
   return (
-    <footer className="bg-brand-dark text-white py-16">
+    <footer className="bg-dark border-t-2 border-terra text-white py-16">
       <div className="container-site">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
@@ -59,7 +59,7 @@ export function Footer({ settings }: FooterProps) {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-white/70 hover:text-white transition-colors"
+                    className="text-xs tracking-wider uppercase text-white/70 hover:text-white transition-colors"
                   >
                     {link.platform}
                   </a>
@@ -70,7 +70,7 @@ export function Footer({ settings }: FooterProps) {
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/10 text-center">
-          <p className="text-xs text-white/50">
+          <p className="text-xs text-white/50 tracking-wider">
             &copy; {new Date().getFullYear()}{" "}
             {settings?.siteName || "Kitao Catering"}. All rights reserved.
           </p>

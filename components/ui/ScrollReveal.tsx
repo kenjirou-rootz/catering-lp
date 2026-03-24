@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { EASE_REVEAL, DURATION } from "@/lib/animation";
+import { m, useInView, useReducedMotion } from "framer-motion";
+import { EASE_REVEAL, EASE_EDITORIAL, DURATION } from "@/lib/animation";
 
-type ScrollRevealVariant = "fadeUp" | "imageReveal";
+type ScrollRevealVariant = "fadeUp" | "imageReveal" | "editorialSlide";
 
 type ScrollRevealProps = {
   children: React.ReactNode;
@@ -21,6 +21,10 @@ const variants = {
   imageReveal: {
     initial: { opacity: 0, scale: 1.1 },
     animate: { opacity: 1, scale: 1 },
+  },
+  editorialSlide: {
+    initial: { opacity: 0, x: -40 },
+    animate: { opacity: 1, x: 0 },
   },
 };
 
@@ -39,21 +43,22 @@ export function ScrollReveal({
   }
 
   const v = variants[variant];
+  const ease = variant === "editorialSlide" ? EASE_EDITORIAL : EASE_REVEAL;
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       initial={v.initial}
       animate={isInView ? v.animate : v.initial}
       transition={{
         duration: DURATION.SLOWER,
         delay,
-        ease: EASE_REVEAL,
+        ease,
       }}
       className={className}
       style={variant === "imageReveal" ? { overflow: "hidden" } : undefined}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

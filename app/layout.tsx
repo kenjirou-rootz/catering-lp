@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
-import { Noto_Serif_JP, Noto_Sans_JP, Inter } from "next/font/google";
+import { Cormorant_Garamond, Noto_Serif_JP, Noto_Sans_JP, Inter } from "next/font/google";
 import "./globals.css";
+import { MotionProvider } from "@/components/ui/MotionProvider";
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 const notoSerifJP = Noto_Serif_JP({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-serif",
+  weight: ["400", "500", "600"],
+  variable: "--font-serif-ja",
   display: "swap",
 });
 
@@ -43,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" className={`${notoSerifJP.variable} ${notoSansJP.variable} ${inter.variable}`}>
+    <html lang="ja" className={`${cormorantGaramond.variable} ${notoSerifJP.variable} ${notoSansJP.variable} ${inter.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -64,7 +72,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans"><MotionProvider>{children}</MotionProvider></body>
     </html>
   );
 }

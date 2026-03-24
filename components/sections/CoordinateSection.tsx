@@ -14,7 +14,9 @@ type CoordinateItem = {
   photos?: any[];
 };
 
-export function CoordinateSection({ data }: { data: CoordinateItem[] | null }) {
+type SectionHeading = { en: string; ja: string };
+
+export function CoordinateSection({ data, heading }: { data: CoordinateItem[] | null; heading: SectionHeading }) {
   if (!data || data.length === 0) return null;
-  return <CoordinateSectionInner data={data} />;
+  return <CoordinateSectionInner data={data} heading={heading} />;
 }

@@ -10,6 +10,7 @@ import {
   venueQuery,
   flowStepsQuery,
   testimonialsQuery,
+  siteSettingsQuery,
 } from "@/sanity/lib/queries";
 
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -23,6 +24,7 @@ import { VenueSection } from "@/components/sections/VenueSection";
 import { FlowSection } from "@/components/sections/FlowSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 
 export default async function HomePage() {
   const [
@@ -36,6 +38,7 @@ export default async function HomePage() {
     venue,
     flowSteps,
     testimonials,
+    settings,
   ] = await Promise.all([
     sanityFetch<any>(heroQuery),
     sanityFetch<any>(aboutQuery),
@@ -47,21 +50,39 @@ export default async function HomePage() {
     sanityFetch<any>(venueQuery),
     sanityFetch<any[]>(flowStepsQuery),
     sanityFetch<any[]>(testimonialsQuery),
+    sanityFetch<any>(siteSettingsQuery),
   ]);
+
+  const h = {
+    about: { en: settings?.headingAboutEn || "About", ja: settings?.headingAboutJa || "Kitaoとは？" },
+    portfolio: { en: settings?.headingPortfolioEn || "Portfolio", ja: settings?.headingPortfolioJa || "実績レポート" },
+    catch: { en: settings?.headingCatchEn || "Heartfelt Hospitality" },
+    features: { en: settings?.headingFeaturesEn || "Features", ja: settings?.headingFeaturesJa || "弊社の特長" },
+    pricing: { en: settings?.headingPricingEn || "Pricing", ja: settings?.headingPricingJa || "料金プラン" },
+    coordinate: { en: settings?.headingCoordinateEn || "Coordinate", ja: settings?.headingCoordinateJa || "テーブルコーディネート" },
+    venue: { en: settings?.headingVenueEn || "Venue", ja: settings?.headingVenueJa || "レンタル会場" },
+    flow: { en: settings?.headingFlowEn || "Flow", ja: settings?.headingFlowJa || "ご利用の流れ" },
+    testimonials: { en: settings?.headingTestimonialsEn || "Testimonials", ja: settings?.headingTestimonialsJa || "お客様の声" },
+    contact: { en: settings?.headingContactEn || "Contact", ja: settings?.headingContactJa || "お問い合わせ" },
+  };
 
   return (
     <>
       <HeroSection data={hero} />
-      <AboutSection data={about} />
-      <PortfolioSection data={portfolios} />
-      <CatchCarouselSection data={catchCarousel} />
-      <FeaturesSection data={features} />
-      <PricingSection data={pricing} />
-      <CoordinateSection data={coordinates} />
-      <VenueSection data={venue} />
-      <FlowSection data={flowSteps} />
-      <TestimonialsSection data={testimonials} />
-      <ContactSection />
+      <AboutSection data={about} heading={h.about} />
+      <SectionDivider />
+      <PortfolioSection data={portfolios} heading={h.portfolio} />
+      <CatchCarouselSection data={catchCarousel} headingEn={h.catch.en} />
+      <SectionDivider />
+      <FeaturesSection data={features} heading={h.features} />
+      <PricingSection data={pricing} heading={h.pricing} />
+      <SectionDivider />
+      <CoordinateSection data={coordinates} heading={h.coordinate} />
+      <VenueSection data={venue} heading={h.venue} />
+      <SectionDivider />
+      <FlowSection data={flowSteps} heading={h.flow} />
+      <TestimonialsSection data={testimonials} heading={h.testimonials} />
+      <ContactSection heading={h.contact} />
     </>
   );
 }

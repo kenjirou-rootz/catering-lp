@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { EASE_REVEAL, DURATION } from "@/lib/animation";
+import { m, useReducedMotion } from "framer-motion";
+import { EASE_REVEAL, EASE_EDITORIAL, DURATION, STAGGER } from "@/lib/animation";
 
 type HeroAnimationProps = {
   children: React.ReactNode;
@@ -15,27 +15,26 @@ export function HeroAnimation({ children }: HeroAnimationProps) {
   }
 
   return (
-    <motion.div
+    <m.div
       initial="hidden"
       animate="visible"
       variants={{
         hidden: {},
         visible: {
           transition: {
-            staggerChildren: 0.2,
+            staggerChildren: STAGGER.HERO,
           },
         },
       }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
-// Sub-components for individual animated elements
 export function HeroImage({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <motion.div
+    <m.div
       variants={{
         hidden: { opacity: 0 },
         visible: {
@@ -46,42 +45,42 @@ export function HeroImage({ children, className }: { children: React.ReactNode; 
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
 export function HeroContent({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <motion.div
+    <m.div
       variants={{
-        hidden: { opacity: 0, y: 30 },
+        hidden: { opacity: 0, y: 40 },
         visible: {
           opacity: 1,
           y: 0,
-          transition: { duration: DURATION.SLOWER, ease: EASE_REVEAL, delay: 0.3 },
+          transition: { duration: DURATION.SLOWER, ease: EASE_EDITORIAL, delay: 0.4 },
         },
       }}
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
 export function HeroCTA({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <motion.div
+    <m.div
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: {
           opacity: 1,
           y: 0,
-          transition: { duration: DURATION.SLOW, ease: EASE_REVEAL, delay: 0.6 },
+          transition: { duration: DURATION.SLOW, ease: EASE_EDITORIAL, delay: 0.8 },
         },
       }}
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
