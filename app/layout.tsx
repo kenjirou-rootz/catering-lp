@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Noto_Serif_JP, Noto_Sans_JP, Inter } from "next/font/google";
 import "./globals.css";
 import { MotionProvider } from "@/components/ui/MotionProvider";
+import { SiteLoader } from "@/components/ui/SiteLoader";
 
 const cormorantGaramond = Cormorant_Garamond({
   subsets: ["latin"],
@@ -72,7 +73,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans"><MotionProvider>{children}</MotionProvider></body>
+      <body className="font-sans"><MotionProvider><SiteLoader />{children}</MotionProvider></body>
     </html>
   );
 }
