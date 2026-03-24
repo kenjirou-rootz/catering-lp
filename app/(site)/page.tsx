@@ -69,10 +69,10 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection data={hero} />
+      <CatchCarouselSection data={catchCarousel} headingEn={h.catch.en} />
       <AboutSection data={about} heading={h.about} />
       <SectionDivider />
       <PortfolioSection data={portfolios} heading={h.portfolio} />
-      <CatchCarouselSection data={catchCarousel} headingEn={h.catch.en} />
       <SectionDivider />
       <FeaturesSection data={features} heading={h.features} />
       <PricingSection data={pricing} heading={h.pricing} />
