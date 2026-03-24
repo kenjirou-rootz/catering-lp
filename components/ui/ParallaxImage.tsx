@@ -29,7 +29,7 @@ export function ParallaxImage({
 
   return (
     <div ref={ref} className={className} style={{ overflow: "hidden" }}>
-      <motion.div style={{ y, scale: 1.1 }}>
+      <motion.div style={{ y, scale: 1.1, position: "relative", width: "100%", height: "100%" }}>
         {children}
       </motion.div>
     </div>
