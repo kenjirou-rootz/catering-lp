@@ -4,6 +4,7 @@ import {
   aboutQuery,
   portfolioQuery,
   catchCarouselQuery,
+  highlightsQuery,
   featuresQuery,
   pricingQuery,
   coordinatesQuery,
@@ -17,6 +18,7 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { PortfolioSection } from "@/components/sections/PortfolioSection";
 import { CatchCarouselSection } from "@/components/sections/CatchCarouselSection";
+import { HighlightsSection } from "@/components/sections/HighlightsSection";
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
 import { PricingSection } from "@/components/sections/PricingSection";
 import { CoordinateSection } from "@/components/sections/CoordinateSection";
@@ -32,6 +34,7 @@ export default async function HomePage() {
     about,
     portfolios,
     catchCarousel,
+    highlights,
     features,
     pricing,
     coordinates,
@@ -44,6 +47,7 @@ export default async function HomePage() {
     sanityFetch<any>(aboutQuery),
     sanityFetch<any[]>(portfolioQuery),
     sanityFetch<any>(catchCarouselQuery),
+    sanityFetch<any>(highlightsQuery),
     sanityFetch<any[]>(featuresQuery),
     sanityFetch<any[]>(pricingQuery),
     sanityFetch<any[]>(coordinatesQuery),
@@ -57,6 +61,7 @@ export default async function HomePage() {
     about: { en: settings?.headingAboutEn || "About", ja: settings?.headingAboutJa || "Kitaoとは？" },
     portfolio: { en: settings?.headingPortfolioEn || "Portfolio", ja: settings?.headingPortfolioJa || "実績レポート" },
     catch: { en: settings?.headingCatchEn || "Heartfelt Hospitality" },
+    highlights: { en: settings?.headingHighlightsEn || "Highlights", ja: settings?.headingHighlightsJa || "選ばれる理由" },
     features: { en: settings?.headingFeaturesEn || "Features", ja: settings?.headingFeaturesJa || "弊社の特長" },
     pricing: { en: settings?.headingPricingEn || "Pricing", ja: settings?.headingPricingJa || "料金プラン" },
     coordinate: { en: settings?.headingCoordinateEn || "Coordinate", ja: settings?.headingCoordinateJa || "テーブルコーディネート" },
@@ -70,6 +75,7 @@ export default async function HomePage() {
     <>
       <HeroSection data={hero} />
       <CatchCarouselSection data={catchCarousel} headingEn={h.catch.en} />
+      <HighlightsSection data={highlights} heading={h.highlights} />
       <AboutSection data={about} heading={h.about} />
       <SectionDivider />
       <PortfolioSection data={portfolios} heading={h.portfolio} />

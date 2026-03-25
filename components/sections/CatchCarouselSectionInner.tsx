@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useCallback } from "react";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { TextReveal } from "@/components/ui/TextReveal";
@@ -12,18 +13,105 @@ type CatchCarouselData = {
   catchCopy?: string;
   description?: string;
   carouselImages?: any[];
+  carouselVideoUrls?: (string | null)[];
 } | null;
 
-export function CatchCarouselSectionInner({ data, headingEn }: { data: CatchCarouselData; headingEn: string }) {
-  if (!data) return null;
+function CarouselSlide({
+  img,
+  videoUrl,
+  index,
+}: {
+  img: any;
+  videoUrl?: string | null;
+  index: number;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleEnter = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => {});
+    }
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, []);
 
   return (
-    <section className="section-padding bg-cream-200">
+    <div
+      className="relative aspect-[16/9] overflow-hidden group cursor-pointer"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      onTouchStart={handleEnter}
+      onTouchEnd={handleLeave}
+    >
+      {/* Thumbnail image — always rendered */}
+      <Image
+        src={urlFor(img).width(800).quality(80).url()}
+        alt={`ケータリングの様子 ${index + 1}`}
+        fill
+        className="object-cover transition-opacity duration-500"
+        style={{ opacity: 1 }}
+      />
+
+      {/* Video overlay — preloaded, plays on hover/tap */}
+      {videoUrl ? (
+        <>
+          <video
+            ref={videoRef}
+            src={videoUrl}
+            muted
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          />
+          {/* Play icon hint */}
+          <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+            <div className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-0 transition-opacity duration-300">
+              <svg
+                className="w-5 h-5 text-white ml-0.5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+          {/* Small video badge */}
+          <div className="absolute top-3 right-3 z-10 px-2 py-1 bg-black/40 backdrop-blur-sm rounded text-[10px] text-white/70 font-medium tracking-wider uppercase opacity-70 group-hover:opacity-0 transition-opacity duration-300">
+            Video
+          </div>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+export function CatchCarouselSectionInner({
+  data,
+  headingEn,
+}: {
+  data: CatchCarouselData;
+  headingEn: string;
+}) {
+  if (!data) return null;
+
+  const videoUrls = data.carouselVideoUrls || [];
+
+  return (
+    <section className="section-padding bg-cream-200 overflow-hidden">
       <div className="container-site text-center mb-12">
         <ScrollReveal>
           <div className="w-20 h-[1px] bg-terra mx-auto mb-8" />
         </ScrollReveal>
-        <TextReveal as="h2" className="text-5xl md:text-7xl lg:text-8xl font-serif font-light text-terra leading-editorial tracking-heading">
+        <TextReveal
+          as="h2"
+          className="text-5xl md:text-7xl lg:text-8xl font-serif font-light text-terra leading-editorial tracking-heading"
+        >
           {headingEn}
         </TextReveal>
         {data.catchCopy ? (
@@ -58,14 +146,11 @@ export function CatchCarouselSectionInner({ data, headingEn }: { data: CatchCaro
           >
             {data.carouselImages.map((img: any, i: number) => (
               <SwiperSlide key={i}>
-                <div className="relative aspect-[16/9] overflow-hidden">
-                  <Image
-                    src={urlFor(img).width(800).quality(80).url()}
-                    alt={`ケータリングの様子 ${i + 1}`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <CarouselSlide
+                  img={img}
+                  videoUrl={videoUrls[i] || null}
+                  index={i}
+                />
               </SwiperSlide>
             ))}
           </Swiper>

@@ -24,7 +24,16 @@ export const portfolioQuery = `*[_type == "portfolio"] | order(order asc){
 export const catchCarouselQuery = `*[_type == "catchCarousel"][0]{
   catchCopy,
   description,
-  carouselImages
+  carouselImages,
+  "carouselVideoUrls": carouselVideos[].asset->url
+}`;
+
+export const highlightsQuery = `*[_type == "highlights"][0]{
+  description,
+  slides[]{
+    imageLarge,
+    imageSmall
+  }
 }`;
 
 export const featuresQuery = `*[_type == "feature"] | order(order asc){
@@ -87,6 +96,8 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   headingPortfolioEn,
   headingPortfolioJa,
   headingCatchEn,
+  headingHighlightsEn,
+  headingHighlightsJa,
   headingFeaturesEn,
   headingFeaturesJa,
   headingPricingEn,

@@ -103,6 +103,20 @@ export default defineType({
       initialValue: "Heartfelt Hospitality",
     }),
     defineField({
+      name: "headingHighlightsEn",
+      title: "Highlights セクション見出し（英文）",
+      type: "string",
+      fieldset: "sectionHeadings",
+      initialValue: "Highlights",
+    }),
+    defineField({
+      name: "headingHighlightsJa",
+      title: "Highlights セクション見出し（日本語）",
+      type: "string",
+      fieldset: "sectionHeadings",
+      initialValue: "選ばれる理由",
+    }),
+    defineField({
       name: "headingFeaturesEn",
       title: "Features セクション見出し（英文）",
       type: "string",

@@ -2,6 +2,7 @@ import hero from "./documents/hero";
 import about from "./documents/about";
 import portfolio from "./documents/portfolio";
 import catchCarousel from "./documents/catchCarousel";
+import highlights from "./documents/highlights";
 import feature from "./documents/feature";
 import pricingPlan from "./documents/pricingPlan";
 import coordinate from "./documents/coordinate";
@@ -15,6 +16,7 @@ export const schemaTypes = [
   about,
   portfolio,
   catchCarousel,
+  highlights,
   feature,
   pricingPlan,
   coordinate,
