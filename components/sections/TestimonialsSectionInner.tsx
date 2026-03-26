@@ -43,9 +43,10 @@ const FadeImage = memo(function FadeImage({
     <div className="relative aspect-square overflow-hidden bg-cream-200">
       {personPhoto ? (
         <Image
-          src={urlFor(personPhoto).width(400).quality(80).url()}
+          src={urlFor(personPhoto).width(800).quality(80).url()}
           alt={name || "利用者"}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className={`object-cover transition-opacity duration-700 ${
             showEvent ? "opacity-0" : "opacity-100"
           }`}
@@ -53,9 +54,10 @@ const FadeImage = memo(function FadeImage({
       ) : null}
       {eventPhoto ? (
         <Image
-          src={urlFor(eventPhoto).width(400).quality(80).url()}
+          src={urlFor(eventPhoto).width(800).quality(80).url()}
           alt="会場の様子"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className={`object-cover transition-opacity duration-700 ${
             showEvent ? "opacity-100" : "opacity-0"
           }`}
