@@ -187,7 +187,7 @@ export function HighlightsSectionInner({
                   transition={{ duration: DURATION.SLOW, ease: EASE_EDITORIAL }}
                 >
                   {current.title ? (
-                    <h3 className="text-lg lg:text-2xl font-serif font-light text-dark leading-[1.2] tracking-[-0.02em]">
+                    <h3 className="text-2xl lg:text-4xl font-serif-ja font-medium text-dark leading-[1.3] tracking-[0.02em]">
                       {current.title}
                     </h3>
                   ) : null}
