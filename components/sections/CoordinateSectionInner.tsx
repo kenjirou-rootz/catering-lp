@@ -49,9 +49,10 @@ function CoordinateCard({ item }: { item: CoordinateItem }) {
               <SwiperSlide key={pi}>
                 <div className="relative w-full h-full">
                   <Image
-                    src={urlFor(photo).width(600).quality(80).url()}
+                    src={urlFor(photo).width(1200).quality(80).url()}
                     alt={`${title} ${pi + 1}`}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-all duration-700 group-hover:scale-[1.05] group-hover:brightness-110"
                   />
                 </div>
@@ -60,9 +61,10 @@ function CoordinateCard({ item }: { item: CoordinateItem }) {
           </Swiper>
         ) : (
           <Image
-            src={urlFor(item.photos[0]).width(600).quality(80).url()}
+            src={urlFor(item.photos[0]).width(1200).quality(80).url()}
             alt={title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-all duration-700 group-hover:scale-[1.05] group-hover:brightness-110"
           />
         )
