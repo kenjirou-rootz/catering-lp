@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { m, AnimatePresence, useReducedMotion } from "framer-motion";
 import { urlFor } from "@/sanity/lib/image";
@@ -22,7 +22,14 @@ type HighlightsData = {
 type SectionHeading = { en: string; ja: string };
 
 const AUTOPLAY_MS = 5000;
+const SWIPE_THRESHOLD = 50;
 const padIndex = (n: number) => String(n + 1).padStart(2, "0");
+
+const slideVariants = {
+  enter: (d: number) => ({ opacity: 0, x: d > 0 ? 80 : -80 }),
+  center: { opacity: 1, x: 0 },
+  exit: (d: number) => ({ opacity: 0, x: d > 0 ? -80 : 80 }),
+};
 
 /* ─── Main component ─── */
 export function HighlightsSectionInner({
@@ -38,27 +45,37 @@ export function HighlightsSectionInner({
   const prefersReducedMotion = useReducedMotion();
   const canAutoplay = slides.length > 1;
 
+  const [direction, setDirection] = useState(0);
+  const dragRef = useRef(0);
+
   const goTo = useCallback(
-    (idx: number) => {
+    (idx: number, dir?: number) => {
+      setDirection(dir ?? (idx > activeIndex ? 1 : -1));
       setActiveIndex(idx);
       setProgress(0);
     },
-    []
+    [activeIndex]
   );
+
+  const goNext = useCallback(() => {
+    goTo((activeIndex + 1) % slides.length, 1);
+  }, [activeIndex, slides.length, goTo]);
+
+  const goPrev = useCallback(() => {
+    goTo((activeIndex - 1 + slides.length) % slides.length, -1);
+  }, [activeIndex, slides.length, goTo]);
 
   /* Autoplay timer */
   useEffect(() => {
     if (!canAutoplay) return;
     setProgress(0);
     const frame = requestAnimationFrame(() => setProgress(100));
-    const timer = setTimeout(() => {
-      setActiveIndex((prev) => (prev + 1) % slides.length);
-    }, AUTOPLAY_MS);
+    const timer = setTimeout(() => goNext(), AUTOPLAY_MS);
     return () => {
       cancelAnimationFrame(frame);
       clearTimeout(timer);
     };
-  }, [activeIndex, canAutoplay, slides.length]);
+  }, [activeIndex, canAutoplay, goNext]);
 
   const current = slides[activeIndex];
   if (!current) return null;
@@ -80,13 +97,27 @@ export function HighlightsSectionInner({
 
         {/* ── Image strip (3:1 aspect) ── */}
         <ScrollReveal delay={0.3}>
-          <div className="relative w-full overflow-hidden bg-dark" style={{ aspectRatio: "3/1", minHeight: 200, maxHeight: 360 }}>
-            <AnimatePresence mode="sync">
+          <m.div
+            className="relative w-full overflow-hidden bg-dark touch-pan-y"
+            style={{ aspectRatio: "3/1", minHeight: 200, maxHeight: 360 }}
+            onPointerDown={(e) => { dragRef.current = e.clientX; }}
+            onPointerUp={(e) => {
+              const dx = e.clientX - dragRef.current;
+              if (Math.abs(dx) > SWIPE_THRESHOLD && slides.length > 1) {
+                if (dx < 0) goNext();
+                else goPrev();
+              }
+              dragRef.current = 0;
+            }}
+          >
+            <AnimatePresence mode="sync" custom={direction}>
               <m.div
                 key={activeIndex}
-                initial={prefersReducedMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                custom={direction}
+                variants={prefersReducedMotion ? undefined : slideVariants}
+                initial={prefersReducedMotion ? false : "enter"}
+                animate="center"
+                exit="exit"
                 transition={{ duration: DURATION.SLOWER, ease: EASE_EDITORIAL }}
                 className="absolute inset-0"
               >
@@ -156,7 +187,7 @@ export function HighlightsSectionInner({
                 }}
               />
             ) : null}
-          </div>
+          </m.div>
         </ScrollReveal>
 
         {/* ── Text info below image ── */}
