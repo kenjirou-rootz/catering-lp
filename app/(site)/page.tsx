@@ -58,7 +58,7 @@ export default async function HomePage() {
   ]);
 
   const h = {
-    about: { en: settings?.headingAboutEn || "About", ja: settings?.headingAboutJa || "Kitaoとは？" },
+    about: { en: settings?.headingAboutEn || "Michelin Chef KITAO", ja: settings?.headingAboutJa || "Kitaoとは？" },
     portfolio: { en: settings?.headingPortfolioEn || "Portfolio", ja: settings?.headingPortfolioJa || "実績レポート" },
     catch: { en: settings?.headingCatchEn || "Heartfelt Hospitality" },
     highlights: { en: settings?.headingHighlightsEn || "Highlights", ja: settings?.headingHighlightsJa || "選ばれる理由" },
