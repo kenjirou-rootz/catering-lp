@@ -152,8 +152,8 @@ export function HighlightsSectionInner({
                       priority={i === 0}
                     />
 
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-dark/50 via-dark/20 to-transparent pointer-events-none" />
+                    {/* Multiply overlay for text readability */}
+                    <div className="absolute inset-0 bg-dark/55 mix-blend-multiply pointer-events-none" />
 
                     {/* Content */}
                     <div className="absolute inset-0 flex flex-col items-start justify-between p-6 md:p-8 lg:p-10">
@@ -180,7 +180,7 @@ export function HighlightsSectionInner({
                           href={slide.ctaLink || "#contact"}
                           className="group inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/5 backdrop-blur-sm px-5 py-2.5 text-sm font-serif-ja text-white transition-all duration-300 hover:bg-terra hover:border-terra hover:shadow-lg"
                         >
-                          {slide.ctaText || "詳しく見る"}
+                          {slide.ctaText || "相談する"}
                           <ArrowRight className="size-4 -rotate-45 transition-all duration-300 ease-out group-hover:rotate-0 group-hover:ml-1" />
                         </a>
                       </div>
