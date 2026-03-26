@@ -41,6 +41,18 @@ export default defineType({
               rows: 3,
               description: "スライドの説明文（任意）",
             }),
+            defineField({
+              name: "ctaText",
+              title: "CTAボタンテキスト",
+              type: "string",
+              description: "ボタンの表示テキスト（未設定時:「詳しく見る」）",
+            }),
+            defineField({
+              name: "ctaLink",
+              title: "CTAリンク先",
+              type: "string",
+              description: "ボタンのリンク先URL（未設定時: #contact）",
+            }),
           ],
           preview: {
             select: { media: "image", title: "title" },

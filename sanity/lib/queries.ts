@@ -33,7 +33,9 @@ export const highlightsQuery = `*[_type == "highlights"][0]{
   slides[]{
     image,
     title,
-    caption
+    caption,
+    ctaText,
+    ctaLink
   }
 }`;
 

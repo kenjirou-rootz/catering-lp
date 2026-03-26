@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { m, AnimatePresence, useReducedMotion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { urlFor } from "@/sanity/lib/image";
 import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -12,6 +13,8 @@ type HighlightSlide = {
   image: any;
   title?: string;
   caption?: string;
+  ctaText?: string;
+  ctaLink?: string;
 };
 
 type HighlightsData = {
@@ -23,13 +26,8 @@ type SectionHeading = { en: string; ja: string };
 
 const AUTOPLAY_MS = 5000;
 const SWIPE_THRESHOLD = 50;
-const padIndex = (n: number) => String(n + 1).padStart(2, "0");
-
-const slideVariants = {
-  enter: (d: number) => ({ opacity: 0, x: d > 0 ? 80 : -80 }),
-  center: { opacity: 1, x: 0 },
-  exit: (d: number) => ({ opacity: 0, x: d > 0 ? -80 : 80 }),
-};
+const SLIDE_PCT = 0.91;
+const GAP = 16;
 
 /* ─── Main component ─── */
 export function HighlightsSectionInner({
@@ -41,52 +39,55 @@ export function HighlightsSectionInner({
 }) {
   const slides = data.slides || [];
   const [activeIndex, setActiveIndex] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [trackWidth, setTrackWidth] = useState(0);
   const prefersReducedMotion = useReducedMotion();
   const canAutoplay = slides.length > 1;
 
-  const [direction, setDirection] = useState(0);
   const dragRef = useRef(0);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const goTo = useCallback(
-    (idx: number, dir?: number) => {
-      setDirection(dir ?? (idx > activeIndex ? 1 : -1));
-      setActiveIndex(idx);
-      setProgress(0);
-    },
-    [activeIndex]
-  );
+  /* Measure container width */
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const measure = () => setTrackWidth(el.offsetWidth);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const slideWidth = trackWidth * SLIDE_PCT;
+  const offsetX = -(activeIndex * (slideWidth + GAP));
+
+  const goTo = useCallback((idx: number) => setActiveIndex(idx), []);
 
   const goNext = useCallback(() => {
-    goTo((activeIndex + 1) % slides.length, 1);
-  }, [activeIndex, slides.length, goTo]);
+    setActiveIndex((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
   const goPrev = useCallback(() => {
-    goTo((activeIndex - 1 + slides.length) % slides.length, -1);
-  }, [activeIndex, slides.length, goTo]);
+    setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
-  /* Autoplay timer */
+  /* Autoplay */
   useEffect(() => {
     if (!canAutoplay) return;
-    setProgress(0);
-    const frame = requestAnimationFrame(() => setProgress(100));
-    const timer = setTimeout(() => goNext(), AUTOPLAY_MS);
-    return () => {
-      cancelAnimationFrame(frame);
-      clearTimeout(timer);
-    };
+    const timer = setTimeout(goNext, AUTOPLAY_MS);
+    return () => clearTimeout(timer);
   }, [activeIndex, canAutoplay, goNext]);
 
   const current = slides[activeIndex];
   if (!current) return null;
 
+  /* Padding to center first slide: (100% - 91%) / 2 = 4.5% */
+  const padLeft = trackWidth * (1 - SLIDE_PCT) / 2;
+
   return (
     <section className="section-padding bg-cream-50 overflow-hidden">
       <div className="container-site">
-        {/* ── Heading ── */}
         <AnimatedSectionHeading title={heading.en} titleJa={heading.ja} />
 
-        {/* ── Description ── */}
         {data.description ? (
           <ScrollReveal delay={0.2}>
             <p className="text-base md:text-lg font-serif-ja text-dark-muted leading-relaxed text-center max-w-2xl mx-auto -mt-4 mb-12 md:mb-16">
@@ -94,146 +95,124 @@ export function HighlightsSectionInner({
             </p>
           </ScrollReveal>
         ) : null}
+      </div>
 
-        {/* ── Image strip (3:1 aspect) ── */}
-        <ScrollReveal delay={0.3}>
+      {/* ── Peek Carousel ── */}
+      <ScrollReveal delay={0.3}>
+        <div
+          ref={wrapperRef}
+          className="relative w-full overflow-hidden touch-pan-y select-none"
+          onPointerDown={(e) => {
+            dragRef.current = e.clientX;
+          }}
+          onPointerUp={(e) => {
+            const dx = e.clientX - dragRef.current;
+            if (Math.abs(dx) > SWIPE_THRESHOLD && slides.length > 1) {
+              if (dx < 0) goNext();
+              else goPrev();
+            }
+            dragRef.current = 0;
+          }}
+        >
           <m.div
-            className="relative w-full overflow-hidden bg-dark touch-pan-y"
-            style={{ aspectRatio: "3/1", minHeight: 200, maxHeight: 360 }}
-            onPointerDown={(e) => { dragRef.current = e.clientX; }}
-            onPointerUp={(e) => {
-              const dx = e.clientX - dragRef.current;
-              if (Math.abs(dx) > SWIPE_THRESHOLD && slides.length > 1) {
-                if (dx < 0) goNext();
-                else goPrev();
-              }
-              dragRef.current = 0;
-            }}
+            className="flex will-change-transform"
+            style={{ gap: GAP, paddingLeft: padLeft }}
+            animate={{ x: offsetX }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: DURATION.SLOWER, ease: EASE_EDITORIAL }
+            }
           >
-            <AnimatePresence mode="sync" custom={direction}>
-              <m.div
-                key={activeIndex}
-                custom={direction}
-                variants={prefersReducedMotion ? undefined : slideVariants}
-                initial={prefersReducedMotion ? false : "enter"}
-                animate="center"
-                exit="exit"
-                transition={{ duration: DURATION.SLOWER, ease: EASE_EDITORIAL }}
-                className="absolute inset-0"
-              >
+            {slides.map((slide, i) => {
+              const isActive = i === activeIndex;
+              return (
                 <m.div
-                  initial={prefersReducedMotion ? false : { scale: 1.03 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 6, ease: "linear" }}
-                  className="w-full h-full"
+                  key={i}
+                  className="shrink-0"
+                  style={{ width: slideWidth || `${SLIDE_PCT * 100}%` }}
+                  animate={{
+                    scale: isActive ? 1 : 0.96,
+                    opacity: isActive ? 1 : 0.55,
+                  }}
+                  transition={
+                    prefersReducedMotion
+                      ? { duration: 0 }
+                      : { duration: DURATION.SLOW, ease: EASE_EDITORIAL }
+                  }
                 >
-                  <Image
-                    src={urlFor(current.image).width(1400).quality(80).url()}
-                    alt={current.title || `ハイライト ${activeIndex + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1280px) 100vw, 1280px"
-                    priority={activeIndex === 0}
-                  />
+                  <div className="relative h-[400px] md:h-[540px] lg:h-[664px] overflow-hidden rounded-lg">
+                    {/* Background image */}
+                    <Image
+                      src={urlFor(slide.image).width(1400).quality(80).url()}
+                      alt={slide.title || `ハイライト ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 91vw, (max-width: 1280px) 91vw, 1164px"
+                      priority={i === 0}
+                    />
+
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-dark/50 via-dark/20 to-transparent pointer-events-none" />
+
+                    {/* Content */}
+                    <div className="absolute inset-0 flex flex-col items-end justify-between p-6 md:p-8 lg:p-10">
+                      {/* Top spacer */}
+                      <div />
+
+                      {/* Text: right-aligned */}
+                      <div className="z-10 text-white text-right">
+                        {slide.title ? (
+                          <h3 className="text-3xl md:text-5xl lg:text-6xl font-serif font-light tracking-tight max-w-lg leading-[1.15]">
+                            {slide.title}
+                          </h3>
+                        ) : null}
+                        {slide.caption ? (
+                          <p className="text-sm md:text-base lg:text-lg font-serif-ja max-w-lg my-4 md:my-6 leading-relaxed text-white/85">
+                            {slide.caption}
+                          </p>
+                        ) : null}
+                      </div>
+
+                      {/* CTA: bottom-left */}
+                      <div className="z-10 w-full flex justify-start">
+                        <a
+                          href={slide.ctaLink || "#contact"}
+                          className="group inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/5 backdrop-blur-sm px-5 py-2.5 text-sm font-serif-ja text-white transition-all duration-300 hover:bg-terra hover:border-terra hover:shadow-lg"
+                        >
+                          {slide.ctaText || "詳しく見る"}
+                          <ArrowRight className="size-4 -rotate-45 transition-all duration-300 ease-out group-hover:rotate-0 group-hover:ml-1" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </m.div>
-              </m.div>
-            </AnimatePresence>
+              );
+            })}
+          </m.div>
+        </div>
 
-            {/* Subtle center overlay */}
-            <div className="absolute inset-0 bg-dark/20 pointer-events-none" />
-
-            {/* Centered number overlay */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <AnimatePresence mode="wait">
-                <m.span
-                  key={activeIndex}
-                  initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: DURATION.SLOW, ease: EASE_EDITORIAL }}
-                  className="text-[clamp(48px,8vw,80px)] font-serif font-light text-white/10 leading-none select-none"
-                >
-                  {padIndex(activeIndex)}
-                </m.span>
-              </AnimatePresence>
-            </div>
-
-            {/* Dot navigation */}
-            {slides.length > 1 ? (
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-[5px] z-10">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => goTo(i)}
-                    aria-label={`スライド ${i + 1}`}
-                    className={`h-[6px] rounded-full border-none cursor-pointer transition-all duration-400 ${
-                      i === activeIndex
-                        ? "w-6 bg-terra"
-                        : "w-[6px] bg-white/30 hover:bg-white/50"
-                    }`}
-                    style={{ transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)" }}
-                  />
-                ))}
-              </div>
-            ) : null}
-
-            {/* Progress bar */}
-            {canAutoplay ? (
-              <div
-                className="absolute bottom-0 left-0 h-[2px] bg-terra"
+        {/* Dot navigation */}
+        {slides.length > 1 ? (
+          <div className="flex justify-center gap-1.5 mt-6">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                aria-label={`スライド ${i + 1}`}
+                className={`h-2.5 rounded-full border-none cursor-pointer transition-all duration-400 ${
+                  i === activeIndex
+                    ? "w-4 bg-terra"
+                    : "w-2.5 bg-dark-subtle/40 hover:bg-dark-subtle/60"
+                }`}
                 style={{
-                  width: `${progress}%`,
-                  transition: progress === 0 ? "none" : `width ${AUTOPLAY_MS}ms linear`,
+                  transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
               />
-            ) : null}
-          </m.div>
-        </ScrollReveal>
-
-        {/* ── Text info below image ── */}
-        <ScrollReveal delay={0.4}>
-          <div className="grid grid-cols-[auto_1fr] gap-6 pt-6 pb-2 items-start">
-            {/* Number decoration */}
-            <AnimatePresence mode="wait">
-              <m.span
-                key={activeIndex}
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: DURATION.DEFAULT, ease: EASE_EDITORIAL }}
-                className="text-5xl lg:text-6xl font-serif font-extralight text-terra/12 leading-none select-none tabular-nums"
-              >
-                {padIndex(activeIndex)}
-              </m.span>
-            </AnimatePresence>
-
-            {/* Title + caption */}
-            <div>
-              <AnimatePresence mode="wait">
-                <m.div
-                  key={activeIndex}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: DURATION.SLOW, ease: EASE_EDITORIAL }}
-                >
-                  {current.title ? (
-                    <h3 className="text-2xl lg:text-4xl font-serif-ja font-medium text-dark leading-[1.3] tracking-[0.02em]">
-                      {current.title}
-                    </h3>
-                  ) : null}
-                  {current.caption ? (
-                    <p className="text-sm text-dark-muted leading-[1.8] mt-2 max-w-lg">
-                      {current.caption}
-                    </p>
-                  ) : null}
-                  <div className="w-9 h-[2px] bg-terra mt-4" />
-                </m.div>
-              </AnimatePresence>
-            </div>
+            ))}
           </div>
-        </ScrollReveal>
-      </div>
+        ) : null}
+      </ScrollReveal>
     </section>
   );
 }

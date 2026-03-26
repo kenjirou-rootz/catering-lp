@@ -14,6 +14,8 @@ type HighlightSlide = {
   image: any;
   title?: string;
   caption?: string;
+  ctaText?: string;
+  ctaLink?: string;
 };
 
 type HighlightsData = {
