@@ -11,6 +11,9 @@ type AboutData = {
   salesText?: string;
   careerText?: string;
   images?: any[];
+  mediaType?: "image" | "video";
+  videoUrl?: string;
+  videoPoster?: any;
 } | null;
 
 type SectionHeading = { en: string; ja: string };
@@ -51,10 +54,24 @@ export function AboutSection({
 
         {/* ── Two-column grid (Project 8B: image left, text right) ── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-10 lg:gap-16">
-          {/* Left: Image (4:5 portrait) */}
+          {/* Left: Media (4:5 portrait — image or video) */}
           <m.div {...fadeUp(0)} className="order-1">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
-              {data?.images && data.images[0] ? (
+            <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-dark">
+              {data?.mediaType === "video" && data.videoUrl ? (
+                <video
+                  src={data.videoUrl}
+                  poster={
+                    data.videoPoster
+                      ? urlFor(data.videoPoster).width(900).quality(80).url()
+                      : undefined
+                  }
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              ) : data?.images && data.images[0] ? (
                 <Image
                   src={urlFor(data.images[0]).width(900).quality(80).url()}
                   alt="Kitaoについて"

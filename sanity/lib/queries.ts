@@ -10,7 +10,10 @@ export const heroQuery = `*[_type == "hero"][0]{
 export const aboutQuery = `*[_type == "about"][0]{
   salesText,
   careerText,
-  images
+  images,
+  mediaType,
+  "videoUrl": video.asset->url,
+  videoPoster
 }`;
 
 export const portfolioQuery = `*[_type == "portfolio"] | order(order asc){
