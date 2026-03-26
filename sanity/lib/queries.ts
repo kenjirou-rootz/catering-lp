@@ -32,7 +32,9 @@ export const highlightsQuery = `*[_type == "highlights"][0]{
   description,
   slides[]{
     imageLarge,
-    imageSmall
+    imageSmall,
+    title,
+    caption
   }
 }`;
 

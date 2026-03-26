@@ -35,9 +35,22 @@ export default defineType({
               options: { hotspot: true },
               validation: (rule) => rule.required(),
             }),
+            defineField({
+              name: "title",
+              title: "スライドタイトル",
+              type: "string",
+              description: "例: 季節の食材を活かして",
+            }),
+            defineField({
+              name: "caption",
+              title: "キャプション",
+              type: "text",
+              rows: 3,
+              description: "スライドの説明文（任意）",
+            }),
           ],
           preview: {
-            select: { media: "imageLarge" },
+            select: { media: "imageLarge", title: "title" },
           },
         },
       ],

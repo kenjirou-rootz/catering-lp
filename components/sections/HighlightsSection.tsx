@@ -13,6 +13,8 @@ const HighlightsSectionInner = dynamic(
 type ImagePair = {
   imageLarge: any;
   imageSmall: any;
+  title?: string;
+  caption?: string;
 };
 
 type HighlightsData = {
