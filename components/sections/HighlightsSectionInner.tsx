@@ -8,16 +8,15 @@ import { AnimatedSectionHeading } from "@/components/ui/AnimatedSectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { EASE_EDITORIAL, DURATION } from "@/lib/animation";
 
-type ImagePair = {
-  imageLarge: any;
-  imageSmall: any;
+type HighlightSlide = {
+  image: any;
   title?: string;
   caption?: string;
 };
 
 type HighlightsData = {
   description?: string;
-  slides?: ImagePair[];
+  slides?: HighlightSlide[];
 };
 
 type SectionHeading = { en: string; ja: string };
@@ -98,7 +97,7 @@ export function HighlightsSectionInner({
                   className="w-full h-full"
                 >
                   <Image
-                    src={urlFor(current.imageLarge).width(1400).quality(80).url()}
+                    src={urlFor(current.image).width(1400).quality(80).url()}
                     alt={current.title || `ハイライト ${activeIndex + 1}`}
                     fill
                     className="object-cover"

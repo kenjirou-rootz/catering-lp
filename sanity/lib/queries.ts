@@ -31,8 +31,7 @@ export const catchCarouselQuery = `*[_type == "catchCarousel"][0]{
 export const highlightsQuery = `*[_type == "highlights"][0]{
   description,
   slides[]{
-    imageLarge,
-    imageSmall,
+    image,
     title,
     caption
   }

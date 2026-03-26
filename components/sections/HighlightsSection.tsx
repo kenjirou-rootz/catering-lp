@@ -10,16 +10,15 @@ const HighlightsSectionInner = dynamic(
   { ssr: false }
 );
 
-type ImagePair = {
-  imageLarge: any;
-  imageSmall: any;
+type HighlightSlide = {
+  image: any;
   title?: string;
   caption?: string;
 };
 
 type HighlightsData = {
   description?: string;
-  slides?: ImagePair[];
+  slides?: HighlightSlide[];
 } | null;
 
 type SectionHeading = { en: string; ja: string };

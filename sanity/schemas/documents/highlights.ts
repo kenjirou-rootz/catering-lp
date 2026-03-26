@@ -13,24 +13,17 @@ export default defineType({
     }),
     defineField({
       name: "slides",
-      title: "スライド（画像ペア）",
+      title: "スライド",
       type: "array",
       of: [
         {
           type: "object",
-          name: "imagePair",
-          title: "画像ペア",
+          name: "highlightSlide",
+          title: "スライド",
           fields: [
             defineField({
-              name: "imageLarge",
-              title: "メイン画像（左・大）",
-              type: "image",
-              options: { hotspot: true },
-              validation: (rule) => rule.required(),
-            }),
-            defineField({
-              name: "imageSmall",
-              title: "サブ画像（右・小）",
+              name: "image",
+              title: "スライド画像",
               type: "image",
               options: { hotspot: true },
               validation: (rule) => rule.required(),
@@ -50,11 +43,11 @@ export default defineType({
             }),
           ],
           preview: {
-            select: { media: "imageLarge", title: "title" },
+            select: { media: "image", title: "title" },
           },
         },
       ],
-      validation: (rule) => rule.required().min(1).max(3),
+      validation: (rule) => rule.required().min(1).max(5),
     }),
   ],
 });
