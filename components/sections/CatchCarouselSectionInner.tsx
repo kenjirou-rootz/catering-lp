@@ -51,9 +51,10 @@ function CarouselSlide({
     >
       {/* Thumbnail image — always rendered */}
       <Image
-        src={urlFor(img).width(800).quality(80).url()}
+        src={urlFor(img).width(1400).quality(80).url()}
         alt={`ケータリングの様子 ${index + 1}`}
         fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px"
         className="object-cover transition-opacity duration-500"
         style={{ opacity: 1 }}
       />
