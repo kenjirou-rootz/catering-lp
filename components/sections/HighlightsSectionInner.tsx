@@ -163,12 +163,12 @@ export function HighlightsSectionInner({
                       {/* Text: left-aligned */}
                       <div className="z-10 text-white text-left">
                         {slide.title ? (
-                          <h3 className="text-3xl md:text-5xl lg:text-6xl font-serif font-light tracking-tight max-w-lg leading-[1.15]">
+                          <h3 className="text-3xl md:text-5xl lg:text-6xl font-serif font-light tracking-tight max-w-full leading-[1.15] whitespace-nowrap">
                             {slide.title}
                           </h3>
                         ) : null}
                         {slide.caption ? (
-                          <p className="text-sm md:text-base lg:text-lg font-serif-ja max-w-lg my-4 md:my-6 leading-relaxed text-white/85">
+                          <p className="text-sm md:text-base lg:text-lg font-sans font-light max-w-lg my-4 md:my-6 leading-relaxed text-white/85">
                             {slide.caption}
                           </p>
                         ) : null}

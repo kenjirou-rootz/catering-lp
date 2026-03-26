@@ -32,7 +32,7 @@ export function TextReveal({
       {lines.map((line, i) => (
         <span
           key={i}
-          style={{ display: "block", overflow: "hidden" }}
+          style={{ display: "block", overflow: "hidden", paddingBottom: "0.15em" }}
         >
           <m.span
             style={{ display: "block" }}
