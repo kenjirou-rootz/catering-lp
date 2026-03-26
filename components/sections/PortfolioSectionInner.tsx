@@ -23,9 +23,10 @@ function PortfolioCard({ item }: { item: PortfolioItem }) {
       <div className="relative w-full h-full">
         {item.images && item.images[0] ? (
           <Image
-            src={urlFor(item.images[0]).width(600).quality(80).url()}
+            src={urlFor(item.images[0]).width(1200).quality(80).url()}
             alt={item.title || "実績写真"}
             fill
+            sizes="(max-width: 768px) 280px, (max-width: 1024px) 320px, 360px"
             className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
           />
         ) : (
