@@ -324,7 +324,7 @@ function CarouselCard({
 
         {/* Text content */}
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-          <h3 className="text-2xl md:text-3xl font-serif font-light text-white tracking-heading leading-tight mb-2">
+          <h3 className="text-2xl md:text-3xl font-serif-ja font-light text-white tracking-heading leading-tight mb-2">
             {card.category}
           </h3>
           <span className="text-xs uppercase tracking-editorial text-white/70 font-serif-ja">
@@ -441,7 +441,7 @@ function ExpandedCard({
         <div className="px-6 md:px-10 pb-8 md:pb-10 -mt-8 relative z-10">
           <h3
             id={headingId}
-            className="text-3xl md:text-4xl font-serif font-light text-dark tracking-heading leading-tight mb-2"
+            className="text-3xl md:text-4xl font-serif-ja font-light text-dark tracking-heading leading-tight mb-2"
           >
             {card.category}
           </h3>
