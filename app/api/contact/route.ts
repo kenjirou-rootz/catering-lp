@@ -26,7 +26,7 @@ export async function POST(request: Request) {
         Authorization: `Bearer ${resendApiKey}`,
       },
       body: JSON.stringify({
-        from: "Kitao Catering <noreply@yourdomain.com>",
+        from: "Kitao Catering <noreply@kitao-catering.jp>",
         to: [process.env.CONTACT_EMAIL || "info@example.com"],
         subject: `【お問い合わせ】${name}様より`,
         html: `
