@@ -311,7 +311,7 @@ function CarouselCard({
       >
         {/* Image */}
         <Image
-          src={urlFor(card.image).width(800).quality(80).url()}
+          src={urlFor(card.image).width(1200).quality(85).url()}
           alt={card.title}
           fill
           className="object-cover"
@@ -324,12 +324,12 @@ function CarouselCard({
 
         {/* Text content */}
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-          <span className="text-xs uppercase tracking-editorial text-white/70 font-serif-ja mb-2">
+          <h3 className="text-2xl md:text-3xl font-serif font-light text-white tracking-heading leading-tight mb-2">
             {card.category}
-          </span>
-          <h3 className="text-2xl md:text-3xl font-serif font-light text-white tracking-heading leading-tight">
-            {card.title}
           </h3>
+          <span className="text-xs uppercase tracking-editorial text-white/70 font-serif-ja">
+            {card.title}
+          </span>
         </div>
       </m.button>
     </m.div>
@@ -427,7 +427,7 @@ function ExpandedCard({
         {/* Expanded image */}
         <div className="relative aspect-[16/10] w-full">
           <Image
-            src={urlFor(card.image).width(1600).quality(85).url()}
+            src={urlFor(card.image).width(2400).quality(85).url()}
             alt={card.title}
             fill
             className="object-cover rounded-t-2xl"
@@ -439,15 +439,15 @@ function ExpandedCard({
 
         {/* Content */}
         <div className="px-6 md:px-10 pb-8 md:pb-10 -mt-8 relative z-10">
-          <span className="text-xs uppercase tracking-editorial text-terra font-serif-ja">
-            {card.category}
-          </span>
           <h3
             id={headingId}
-            className="text-3xl md:text-4xl font-serif font-light text-dark tracking-heading leading-tight mt-2 mb-4"
+            className="text-3xl md:text-4xl font-serif font-light text-dark tracking-heading leading-tight mb-2"
           >
-            {card.title}
+            {card.category}
           </h3>
+          <span className="text-xs uppercase tracking-editorial text-terra font-serif-ja mb-4 block">
+            {card.title}
+          </span>
           {card.description ? (
             <p className="text-base md:text-lg leading-reading text-dark-muted font-serif-ja whitespace-pre-line">
               {card.description}
