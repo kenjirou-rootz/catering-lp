@@ -67,8 +67,12 @@ export const coordinatesQuery = `*[_type == "coordinate"] | order(order asc){
 }`;
 
 export const venueQuery = `*[_type == "venue"][0]{
-  description,
-  photos
+  cards[]{
+    category,
+    title,
+    description,
+    image
+  }
 }`;
 
 export const flowStepsQuery = `*[_type == "flowStep"] | order(stepNumber asc){
