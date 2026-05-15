@@ -12,6 +12,13 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "badgeText",
+      title: "バッジテキスト（H1見出し上部・装飾枠内）",
+      type: "string",
+      description: "ヒーローH1の上に枠囲みで表示される装飾テキスト",
+      initialValue: "5ツ星シェフ監修のケータリングサービス",
+    }),
+    defineField({
       name: "mediaType",
       title: "背景メディアタイプ",
       type: "string",

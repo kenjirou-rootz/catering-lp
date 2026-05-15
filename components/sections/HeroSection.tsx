@@ -10,6 +10,7 @@ import {
 
 type HeroData = {
   catchCopy?: string;
+  badgeText?: string;
   mediaType?: "image" | "video";
   backgroundImage?: any;
   backgroundVideoUrl?: string;
@@ -18,7 +19,8 @@ type HeroData = {
 } | null;
 
 export function HeroSection({ data }: { data: HeroData }) {
-  const catchCopy = data?.catchCopy || "特別な空間を、\nおいしい料理と共に。";
+  const catchCopy = data?.catchCopy || "特別な日を、もっと特別に。";
+  const badgeText = data?.badgeText || "5ツ星シェフ監修のケータリングサービス";
   const isVideo = data?.mediaType === "video" && data?.backgroundVideoUrl;
 
   return (
@@ -58,7 +60,7 @@ export function HeroSection({ data }: { data: HeroData }) {
           <HeroContent>
             <div className="inline-block border-l border-r border-white/70 px-4 py-2 mb-8 md:mb-10">
               <span className="text-[10px] md:text-xs lg:text-sm font-serif-ja font-medium text-white tracking-wider">
-                5ツ星シェフ監修のケータリングサービス
+                {badgeText}
               </span>
             </div>
             <h1 className="text-5xl md:text-7xl lg:text-9xl font-serif font-light text-white leading-editorial tracking-heading max-w-5xl">
@@ -67,7 +69,7 @@ export function HeroSection({ data }: { data: HeroData }) {
               Kitao
             </h1>
             <p className="mt-6 text-xl md:text-2xl lg:text-3xl font-serif-ja font-normal text-white leading-relaxed">
-              特別な日を、もっと特別に。
+              {catchCopy}
             </p>
           </HeroContent>
           <HeroCTA className="mt-10">

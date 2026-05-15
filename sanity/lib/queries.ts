@@ -1,5 +1,6 @@
 export const heroQuery = `*[_type == "hero"][0]{
   catchCopy,
+  badgeText,
   mediaType,
   backgroundImage,
   "backgroundVideoUrl": backgroundVideo.asset->url,
